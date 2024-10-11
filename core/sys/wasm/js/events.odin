@@ -173,6 +173,13 @@ event_kind_string := [Event_Kind]string{
 	.Custom = "?custom?",
 }
 
+PointerType :: enum u8 {
+	Unknown = 0,
+	Mouse   = 1,
+	Pen     = 2,
+	Touch   = 3,
+}
+
 Delta_Mode :: enum u32 {
 	Pixel = 0,
 	Line  = 1,
@@ -295,6 +302,25 @@ Event :: struct {
 
 			button:  i16,
 			buttons: bit_set[0..<16; u16],
+		},
+
+		pointer: struct {
+			screen:    [2]i64,
+			client:    [2]i64,
+			offset:    [2]i64,
+			page:      [2]i64,
+			movement:  [2]i64,
+
+			ctrl:       bool,
+			shift:      bool,
+			alt:        bool,
+			meta:       bool,
+			is_primary: bool,
+
+			button:  i16,
+			buttons: bit_set[0..<16; u16],
+
+			pointer_type: PointerType,
 		},
 
 		gamepad: Gamepad_State,

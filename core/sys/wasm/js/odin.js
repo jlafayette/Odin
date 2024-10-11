@@ -1498,6 +1498,39 @@ function odinSetupDefaultImports(wasmMemoryInterface, consoleElement, memory, ev
 					wmi.storeF64(off(8), e.deltaY);
 					wmi.storeF64(off(8), e.deltaZ);
 					wmi.storeU32(off(4), e.deltaMode);
+				} else if (e instanceof PointerEvent) {
+					// TODO: remove duplication from MouseEvent section
+					wmi.storeI64(off(8), e.screenX);
+					wmi.storeI64(off(8), e.screenY);
+					wmi.storeI64(off(8), e.clientX);
+					wmi.storeI64(off(8), e.clientY);
+					wmi.storeI64(off(8), e.offsetX);
+					wmi.storeI64(off(8), e.offsetY);
+					wmi.storeI64(off(8), e.pageX);
+					wmi.storeI64(off(8), e.pageY);
+					wmi.storeI64(off(8), e.movementX);
+					wmi.storeI64(off(8), e.movementY);
+
+					wmi.storeU8(off(1), !!e.ctrlKey);
+					wmi.storeU8(off(1), !!e.shiftKey);
+					wmi.storeU8(off(1), !!e.altKey);
+					wmi.storeU8(off(1), !!e.metaKey);
+					wmi.storeU8(off(1), !!e.isPrimary);
+
+					wmi.storeI16(off(2), e.button);
+					wmi.storeU16(off(2), e.buttons);
+
+					// pen on Windows with Star 5 XP Pen isn't working (says it's a mouse).
+					// Needs more testing to see what's the issue here.
+					if (e.pointerType == "mouse") {
+						wmi.storeU8(off(1), 1);
+					} else if (e.pointerType == "pen") {
+						wmi.storeU8(off(1), 2);
+					} else if (e.pointerType == "touch") {
+						wmi.storeU8(off(1), 3);
+					} else {
+						wmi.storeU8(off(1), 0);
+					}
 				} else if (e instanceof MouseEvent) {
 					wmi.storeI64(off(8), e.screenX);
 					wmi.storeI64(off(8), e.screenY);
