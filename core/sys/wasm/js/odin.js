@@ -1498,6 +1498,71 @@ function odinSetupDefaultImports(wasmMemoryInterface, consoleElement, memory, ev
 					wmi.storeF64(off(8), e.deltaY);
 					wmi.storeF64(off(8), e.deltaZ);
 					wmi.storeU32(off(4), e.deltaMode);
+				} else if (e instanceof TouchEvent) {
+					// console.log(`js touch event ${e.changedTouches.length} ${e.targetTouches.length} ${e.touches.length}`);
+					// console.log(`js touches ${e.touches.item(0)}`);
+					wmi.storeU8(off(1), !!e.ctrlKey);
+					wmi.storeU8(off(1), !!e.shiftKey);
+					wmi.storeU8(off(1), !!e.altKey);
+					wmi.storeU8(off(1), !!e.metaKey);
+
+					wmi.storeInt(off(W, W), e.changedTouches.length);
+					wmi.storeInt(off(W, W), e.targetTouches.length);
+					wmi.storeInt(off(W, W), e.touches.length);
+					for (let i = 0; i < 16; i++) {
+						if (i < e.changedTouches.length) {
+							let t = e.changedTouches.item(i);
+							wmi.storeI64(off(8), t.identifier);
+							wmi.storeI64(off(8), t.screenX);
+							wmi.storeI64(off(8), t.screenY);
+							wmi.storeI64(off(8), t.clientX);
+							wmi.storeI64(off(8), t.clientY);
+							wmi.storeI64(off(8), t.pageX);
+							wmi.storeI64(off(8), t.pageY);
+							wmi.storeI64(off(8), t.radiusX);
+							wmi.storeI64(off(8), t.radiusY);
+							wmi.storeF64(off(8), t.rotationAngle);
+							wmi.storeF64(off(8), t.force);
+						} else {
+							off(88, 8);
+						}
+					}
+					for (let i = 0; i < 16; i++) {
+						if (i < e.targetTouches.length) {
+							let t = e.targetTouches.item(i);
+							wmi.storeI64(off(8), t.identifier);
+							wmi.storeI64(off(8), t.screenX);
+							wmi.storeI64(off(8), t.screenY);
+							wmi.storeI64(off(8), t.clientX);
+							wmi.storeI64(off(8), t.clientY);
+							wmi.storeI64(off(8), t.pageX);
+							wmi.storeI64(off(8), t.pageY);
+							wmi.storeI64(off(8), t.radiusX);
+							wmi.storeI64(off(8), t.radiusY);
+							wmi.storeF64(off(8), t.rotationAngle);
+							wmi.storeF64(off(8), t.force);
+						} else {
+							off(88, 8);
+						}
+					}
+					for (let i = 0; i < 16; i++) {
+						if (i < e.touches.length) {
+							let t = e.touches.item(i);
+							wmi.storeI64(off(8), t.identifier);
+							wmi.storeI64(off(8), t.screenX);
+							wmi.storeI64(off(8), t.screenY);
+							wmi.storeI64(off(8), t.clientX);
+							wmi.storeI64(off(8), t.clientY);
+							wmi.storeI64(off(8), t.pageX);
+							wmi.storeI64(off(8), t.pageY);
+							wmi.storeI64(off(8), t.radiusX);
+							wmi.storeI64(off(8), t.radiusY);
+							wmi.storeF64(off(8), t.rotationAngle);
+							wmi.storeF64(off(8), t.force);
+						} else {
+							off(88, 8);
+						}
+					}
 				} else if (e instanceof PointerEvent) {
 					// TODO: remove duplication from MouseEvent section
 					wmi.storeI64(off(8), e.screenX);

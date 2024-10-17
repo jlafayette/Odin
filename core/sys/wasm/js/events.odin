@@ -202,6 +202,9 @@ GAMEPAD_MAX_MAPPING_SIZE :: 64
 GAMEPAD_MAX_BUTTONS :: 64
 GAMEPAD_MAX_AXES    :: 16
 
+// Not sure what this should be... but this seems like enough
+MAX_TOUCH_POINTS :: 16
+
 Event_Target_Kind :: enum u32 {
 	Element  = 0,
 	Document = 1,
@@ -244,6 +247,29 @@ Gamepad_State :: struct {
 	_mapping_len: int `fmt:"-"`,
 	_id_buf:      [GAMEPAD_MAX_ID_SIZE]byte      `fmt:"-"`,
 	_mapping_buf: [GAMEPAD_MAX_MAPPING_SIZE]byte `fmt:"-"`,
+}
+
+Touch :: struct {
+	identifier:     i64,
+	screen:         [2]i64,
+	client:         [2]i64,
+	page:           [2]i64,
+	radius:         [2]i64,
+	rotation_angle: f64,
+	force:          f64,
+}
+
+TouchEvent :: struct {
+	ctrl:  bool,
+	shift: bool,
+	alt:   bool,
+	meta:  bool,
+	changed_touch_count: int,
+	target_touch_count:  int,
+	touch_count:         int,
+	changed_touches: [MAX_TOUCH_POINTS]Touch `fmt:"v,changed_touch_count"`,
+	target_touches:  [MAX_TOUCH_POINTS]Touch `fmt:"v,target_touch_count"`,
+	touches:         [MAX_TOUCH_POINTS]Touch `fmt:"v,touch_count"`,
 }
 
 Event :: struct {
@@ -322,6 +348,8 @@ Event :: struct {
 
 			pointer_type: PointerType,
 		},
+
+		touch: TouchEvent,
 
 		gamepad: Gamepad_State,
 	},
