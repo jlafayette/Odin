@@ -418,7 +418,9 @@ class WebGLInterface {
 				if (data) {
 					this.ctx.bufferSubData(target, offset, this.mem.loadBytes(data, size));
 				} else {
-					this.ctx.bufferSubData(target, offset, null);
+					console.log("ERROR: data is empty for BufferSubData, skipping update")
+					// this.ctx.bufferSubData(target, offset, null);
+					return;
 				}
 			},
 
