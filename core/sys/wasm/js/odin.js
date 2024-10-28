@@ -1500,7 +1500,7 @@ function odinSetupDefaultImports(wasmMemoryInterface, consoleElement, memory, ev
 					wmi.storeF64(off(8), e.deltaY);
 					wmi.storeF64(off(8), e.deltaZ);
 					wmi.storeU32(off(4), e.deltaMode);
-				} else if (e instanceof TouchEvent) {
+				} else if ('TouchEvent' in window && e instanceof TouchEvent) {
 					// console.log(`js touch event ${e.changedTouches.length} ${e.targetTouches.length} ${e.touches.length}`);
 					// console.log(`js touches ${e.touches.item(0)}`);
 					wmi.storeU8(off(1), !!e.ctrlKey);
